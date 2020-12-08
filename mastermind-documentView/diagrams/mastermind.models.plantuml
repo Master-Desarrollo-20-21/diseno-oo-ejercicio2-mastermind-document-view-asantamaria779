@@ -1,0 +1,72 @@
+@startuml
+class mastermind.models.Result {
+	~int numberOfBlacks
+	~int numberOfWhites
+	+Result(ProposedCombination)
+	+void check(SecretCombination)
+	+boolean isWinner()
+	+ProposedCombination getProposedCombination()
+	+int getNumberOfBlacks()
+	+int getNumberOfWhites()
+}
+
+class mastermind.models.Game {
+	~int MAX_ATTEMPTS
+	~int numberOfAttempts
+	+Game()
+	+void reset()
+	+int getMaxAttempts()
+	+int getNumberOfAttempts()
+	+Result getResult(int)
+	+SecretCombination getSecretCombination()
+	+void setResults(Result,int)
+	+void setNumberOfAttempts(int)
+}
+
+class mastermind.models.SecretCombination {
+	~SecretCombination()
+	-{static}String makeRandom()
+	+int numberCoincidencesInColourAndPosition(ProposedCombination)
+	+int numberCoincidencesInColourOnly(ProposedCombination)
+}
+
+class mastermind.models.ProposedCombination {
+	+ProposedCombination(String)
+	+ProposedCombination()
+	+String getColors()
+	+void setColors(String)
+}
+
+class mastermind.models.Combination {
+	#{static}int LENGTH
+	#String colors
+	~Combination(String colors)
+	+{static}boolean isValidLength(String)
+	+{static}boolean areValidColors(String)
+	+{static}String validColors()
+	+{static}int length()
+}
+
+enum mastermind.models.Color {
+	RED
+	BLUE
+	YELLOW
+	GREEN
+	ORANGE
+	PINK
+	color
+	~Color(char)
+	+{static}boolean isValid(char)
+	+{static}String validColors()
+}
+
+mastermind.models.Game *-down-> mastermind.models.SecretCombination
+mastermind.models.Game o-down-> "0..10" mastermind.models.Result
+mastermind.models.Result -down-> mastermind.models.ProposedCombination
+mastermind.models.Result ..> mastermind.models.SecretCombination
+mastermind.models.Combination <|-down- mastermind.models.SecretCombination
+mastermind.models.Combination <|-down- mastermind.models.ProposedCombination
+mastermind.models.Combination ..> mastermind.models.Color
+mastermind.models.SecretCombination ..> mastermind.models.Color
+mastermind.models.SecretCombination .right.> mastermind.models.ProposedCombination
+@enduml

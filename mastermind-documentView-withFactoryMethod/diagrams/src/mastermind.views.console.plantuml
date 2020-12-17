@@ -1,0 +1,98 @@
+@startuml
+
+class mastermind.views.console.ConsoleView {
+	+ConsoleView(Game)
+	#void start()
+	#void play()
+	#boolean isResumed()
+}
+
+class mastermind.views.console.PlayView {
+	#PlayView(Game)
+	#void interact()
+	-void showFinalResult()
+}
+
+class mastermind.views.console.ResumeView {
+	#ResumeView(Game)
+	#boolean isResumed()
+}
+
+class mastermind.views.console.ResultView {
+	#void show(Result)
+}
+
+class mastermind.views.console.StartView {
+	#void interact()
+}
+
+class mastermind.views.console.GameView {
+	#GameView(Game)
+	#void show()
+}
+
+class mastermind.views.console.ProposedCombinationView {
+	#ProposedCombination read()
+	#void show(ProposedCombination)
+}
+
+class mastermind.views.console.SecretCombinationView {
+	#void show()
+}
+
+class mastermind.views.console.ErrorView {
+	#ErrorView(Error)
+	#void writeln(String)
+	#void writeln()
+}
+
+class mastermind.views.console.YesNoDialog {
+	-{static}char AFFIRMATIVE
+	-{static}char NEGATIVE
+	-{static}String SUFFIX
+	-{static}String MESSAGE
+	-char answer
+	+boolean read(String)
+	-boolean isAfirmative()
+	-char getAnswer()
+	-boolean isNegative()
+}
+
+mastermind.views.View <|-down- mastermind.views.console.ConsoleView
+mastermind.views.console.ConsoleView *-down-> mastermind.views.console.StartView
+mastermind.views.console.ConsoleView *-down-> mastermind.views.console.PlayView
+mastermind.views.console.ConsoleView *-down-> mastermind.views.console.ResumeView
+mastermind.views.console.PlayView *-down-> mastermind.views.console.GameView
+mastermind.views.console.PlayView *-down-> mastermind.views.console.ProposedCombinationView
+mastermind.views.console.GameView *-down-> mastermind.views.console.ResultView
+mastermind.views.console.GameView *-down-> mastermind.views.console.SecretCombinationView
+mastermind.views.WithGameView <|-down- mastermind.views.console.GameView
+mastermind.views.WithGameView <|-down- mastermind.views.console.PlayView
+mastermind.views.WithGameView <|-down- mastermind.views.console.ResumeView
+mastermind.views.console.ResumeView ..> mastermind.views.console.YesNoDialog
+mastermind.views.ErrorView <|-down- mastermind.views.console.ErrorView
+
+mastermind.views.console.ConsoleView --> mastermind.models.Game
+mastermind.views.console.PlayView --> mastermind.models.Game
+mastermind.views.console.ResumeView --> mastermind.models.Game
+mastermind.views.console.GameView --> mastermind.models.Game
+mastermind.views.console.ResultView ..> mastermind.models.Result
+mastermind.views.console.ProposedCombinationView ..> mastermind.models.ProposedCombination
+
+mastermind.views.console.ErrorView --> mastermind.type.Error
+mastermind.views.console.GameView --> mastermind.type.Message
+mastermind.views.console.ProposedCombinationView --> mastermind.type.Message
+mastermind.views.console.ResultView --> mastermind.type.Message
+mastermind.views.console.PlayView --> mastermind.type.Message
+mastermind.views.console.ResumeView --> mastermind.type.Message
+mastermind.views.console.StartView --> mastermind.type.Message
+
+mastermind.views.console.ErrorView ..> utils.console
+mastermind.views.console.GameView ..> utils.console
+mastermind.views.console.PlayView ..> utils.console
+mastermind.views.console.ProposedCombinationView ..> utils.console
+mastermind.views.console.SecretCombinationView ..> utils.console
+mastermind.views.console.ResultView ..> utils.console
+mastermind.views.console.StartView ..> utils.console
+mastermind.views.console.YesNoDialog ..> utils.console
+@enduml

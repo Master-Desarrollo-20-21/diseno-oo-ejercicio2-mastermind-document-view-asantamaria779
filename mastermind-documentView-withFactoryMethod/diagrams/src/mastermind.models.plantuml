@@ -1,0 +1,77 @@
+@startuml
+class mastermind.models.Game {
+	-int MAX_ATTEMPTS
+	-int numberOfAttempts
+	-boolean isWinner
+	+Game()
+	+void reset()
+	+Result getResult(int i)
+	+void increaseNumberOfAttempts()
+	+boolean isOver()
+	+boolean isWinner()
+	+void checkWinner()
+	+int getNumberOfAttempts()
+	+void addResult(ProposedCombination)
+}
+
+class mastermind.models.Combination {
+	-{static}int LENGTH
+	-String colors
+	#Combination(String)
+	+{static}boolean isValidLength(String)
+	+{static}int length()
+	+{static}boolean areValidColors(String)
+	+{static}String validColors()
+	#char getColor(int)
+	+String getColors()
+	#void setColors(String)
+}
+
+class mastermind.models.ProposedCombination {
+	+ProposedCombination(String)
+	#boolean contains(char,int)
+	#boolean contains(char)
+}
+
+class mastermind.models.SecretCombination {
+	#SecretCombination()
+	-{static}String makeRandom()
+	#Result check(ProposedCombination)
+}
+
+class mastermind.models.Result {
+	-int numberOfBlacks
+	-int numberOfWhites
+	#Result(ProposedCombination,int,int)
+	#boolean isWinner()
+	+ProposedCombination getProposedCombination()
+	+int getNumberOfBlacks()
+	+int getNumberOfWhites()
+}
+
+enum mastermind.types.Color {
+	RED
+	BLUE
+	YELLOW
+	GREEN
+	ORANGE
+	PINK
+	color
+	~Color(char color)
+	+{static}boolean isValid(char)
+	+{static}String validColors()
+}
+
+mastermind.models.Combination <|-- mastermind.models.SecretCombination
+mastermind.models.Combination <|-- mastermind.models.ProposedCombination
+mastermind.models.Game *-down-> "[0..10]" mastermind.models.Result
+mastermind.models.Game *-down-> mastermind.models.SecretCombination
+mastermind.models.Game ..> mastermind.models.ProposedCombination
+mastermind.models.Result *-down-> mastermind.models.ProposedCombination
+mastermind.models.SecretCombination ..> mastermind.models.ProposedCombination
+mastermind.models.Combination ..> mastermind.types.Color
+mastermind.models.SecretCombination ..> mastermind.types.Color
+mastermind.models.SecretCombination ..> mastermind.models.Result
+mastermind.models.Game -down[hidden]-> mastermind.models.Combination
+mastermind.models.SecretCombination .right.> java.util.Random
+@enduml

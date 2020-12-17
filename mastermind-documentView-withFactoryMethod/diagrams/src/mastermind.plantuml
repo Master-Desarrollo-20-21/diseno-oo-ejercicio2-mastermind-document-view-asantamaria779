@@ -1,0 +1,26 @@
+@startuml
+abstract class mastermind.Mastermind {
+	#View view
+	#Game game
+	#Mastermind()
+	#{abstract}View createView(Game)
+	#void play()
+}
+
+class mastermind.ConsoleMastermind {
+	#ConsoleView createView(Game)
+	+{static}void main(String[] args)
+}
+
+class mastermind.GraphicsMastermind {
+	#GraphicsView createView(Game)
+	+{static}void main(String[] args)
+}
+
+mastermind.Mastermind *-down-> mastermind.views.View
+mastermind.Mastermind -down-> mastermind.models.Game
+mastermind.Mastermind ..> mastermind.views.console.ConsoleView
+mastermind.Mastermind ..> mastermind.views.console.GraphicsView
+mastermind.Mastermind <|-down- mastermind.ConsoleMastermind
+mastermind.Mastermind <|-down- mastermind.GraphicsMastermind
+@enduml
